@@ -7,11 +7,11 @@ var todoList = {
       console.log("Your todo list is empty!");
     } else {
       console.log("My Todos:");
-      for (i = 0; i < this.todos.length; i++) {
-        if (this.todos[i].completed===false) {
-          console.log("( ) ", this.todos[i].todoText);
-        } else {
+      for (var i = 0; i < this.todos.length; i++) {
+        if (this.todos[i].completed) {
           console.log("(X) ", this.todos[i].todoText);
+        } else {
+          console.log("( ) ", this.todos[i].todoText);
         }
       }
     }
@@ -40,9 +40,58 @@ var todoList = {
     var todo = this.todos[position];
     todo.completed = !todo.completed;
     this.displayTodos();
-  }
+  },
 
+  toggleAll: function() {
+
+    var statusAll = [];
+
+    for (var i=0; i<this.todos.length; i++) {
+      statusAll.push(this.todos[i].completed);
+    }
+    if (statusAll.indexOf(false)===-1) {
+      for (var i=0; i<this.todos.length; i++) {
+        this.todos[i] = false;
+      }
+    } else {
+      for (var i=0; i<this.todos.length; i++) {
+        this.todos[i] = true;
+      }
+    }
+  this.displayTodos();
+  }
 }
+
+
+//GORDON'S TOGGLE ALL FUNCTION
+
+//  toggleAll: function() {
+
+//    var totalTodos = this.todos.length;
+//    var completedTodos = 0;
+
+//    for (var i=0; i<totalTodos; i++) {
+//      if (this.todos[i].completed === true) {
+//        completedTodos++;
+//      }
+//    }
+//    if (completedTodos === totalTodos) {
+//      for (var i=0; i<totalTodos; i++) {
+//        this.todos[i] = false;
+//      }
+//    } else {
+//     for (var i=0; i<totalTodos; i++) {
+//     this.todos[i] = true;
+//     }
+//   }
+//   this.displayTodos();
+// }
+
+
+
+
+
+// VERSION 1 & 2
 
 // var todos = ["item 1", "item 2", "item 3"];
 //
