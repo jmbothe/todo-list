@@ -60,16 +60,50 @@ var todoList = {
   }
 }
 
-var displayTodosButton = document.getElementById("displayTodosButton");
-var toggleAllButton = document.getElementById("toggleAllButton");
+var handlers = {
+  displayTodos: function() {
+    todoList.displayTodos();
+  },
+  addTodo: function() {
+    var addTodoTextInput = document.getElementById("addTodoTextInput");
+    todoList.addTodo(addTodoTextInput.value);
+    addTodoTextInput.value = "";
+  },
+  changeTodo: function() {
+    var changeTodoPositionInput = document.getElementById("changeTodoPositionInput");
+    var changeTodoTextInput = document.getElementById("changeTodoTextInput");
+    todoList.changeTodo(changeTodoPositionInput.valueAsNumber, changeTodoTextInput.value);
+    changeTodoPositionInput.value = "";
+    changeTodoTextInput.value = "";
+  },
+  deleteTodo: function() {
+    var deleteTodoPositionInput = document.getElementById("deleteTodoPositionInput");
+    todoList.deleteTodo(deleteTodoPositionInput.valueAsNumber);
+    deleteTodoPositionInput.value = "";
+  },
+  toggleCompleted: function() {
+  var toggleCompletedPositionInput = document.getElementById("toggleCompletedPositionInput");
+  todoList.toggleCompleted(toggleCompletedPositionInput.valueAsNumber);
+  toggleCompletedPositionInput.value = "";
+  },
+  toggleAll: function() {
+    todoList.toggleAll();
+  }
+};
 
-displayTodosButton.addEventListener("click", function() {
-  todoList.displayTodos();
-});
 
-toggleAllButton.addEventListener("click", function() {
-  todoList.toggleAll();
-});
+//OLD MESSY WAY TO HANDLE EVENTS: VERSION 7
+//
+// var displayTodosButton = document.getElementById("displayTodosButton");
+// var toggleAllButton = document.getElementById("toggleAllButton");
+//
+// displayTodosButton.addEventListener("click", function() {
+//   todoList.displayTodos();
+// });
+//
+// toggleAllButton.addEventListener("click", function() {
+//   todoList.toggleAll();
+// });
 
 
 // GORDON'S TOGGLE ALL FUNCTION
@@ -95,8 +129,6 @@ toggleAllButton.addEventListener("click", function() {
 //   }
 //   this.displayTodos();
 // }
-
-
 
 
 // VERSION 1 & 2
