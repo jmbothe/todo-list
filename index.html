@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en" dir="ltr">
 <head>
-  
+
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Todo List</title>
 
+  <link rel="stylesheet" href="ss/styles.css">
   <script type="text/javascript" src="scripts/main.js" defer></script>
 
 </head>
@@ -15,28 +16,16 @@
 <body>
   <h1>Todo List</h1>
 
-  <div>
-    <button onclick="handlers.toggleAll()">Toggle All</button>
-  </div>
-
-  <div>
-    <button onclick="handlers.addTodo()">Add</button>
-    <input id="addTodoTextInput" type="text">
-  </div>
-
-  <div>
-    <button onclick="handlers.changeTodo()">Change Todo</button>
-    <input id="changeTodoPositionInput" type="number">
-    <input id="changeTodoTextInput" type="text">
-  </div>
-
-  <div>
-    <button onclick="handlers.toggleCompleted()">Completed</button>
-    <input id="toggleCompletedPositionInput" type="number">
-  </div>
-
   <ul>
   </ul>
+
+  <div class="add-todo-text">
+    <input class="add-todo-text-input" type="text" placeholder='Add New Todo. Hit Enter.'>
+  </div>
+
+  <div class="toggle-all-container">
+    <button class="toggle-all-button">Toggle All Complete</button>
+  </div>
 
 </body>
 

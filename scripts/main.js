@@ -20,13 +20,13 @@ var todoList = {
   toggleAll: function () {
     var statusAll = []
     this.todos.forEach(function (todo) {
-      statusAll.push(todo.completed)// create a list of Booleans representing completed status of all todos
+      statusAll.push(todo.completed)
     })
-    this.todos.forEach(function (todo) { // search list of Booleans
-      if (statusAll.indexOf(false) === -1) { // if there are no incomplete tasks (if all are true, indexOf returns -1)
-        todo.completed = false// change each to incomplete
-      } else { // if there is even one incomplete task (indexOf returns zero or greater)
-        todo.completed = true // change all to complete
+    this.todos.forEach(function (todo) {
+      if (statusAll.indexOf(false) === -1) {
+        todo.completed = false
+      } else {
+        todo.completed = true
       }
     })
   }
@@ -35,27 +35,25 @@ var todoList = {
 var handlers = {
 
   addTodo: function () {
-    var addTodoTextInput = document.getElementById('addTodoTextInput')
+    var addTodoTextInput = document.querySelector('.add-todo-text-input')
     todoList.addTodo(addTodoTextInput.value)
     addTodoTextInput.value = ''
     view.displayTodos()
   },
-  changeTodo: function () {
-    var changeTodoPositionInput = document.getElementById('changeTodoPositionInput')
-    var changeTodoTextInput = document.getElementById('changeTodoTextInput')
-    todoList.changeTodo(changeTodoPositionInput.valueAsNumber, changeTodoTextInput.value)
-    changeTodoPositionInput.value = ''
-    changeTodoTextInput.value = ''
+  changeTodo: function (position) {
+    view.displayTodos(position)
+  },
+  saveChangeTodo: function (position) {
+    var changeTodoTextInput = document.querySelector('.change-todo-text-input')
+    todoList.changeTodo(position, changeTodoTextInput.value)
     view.displayTodos()
   },
   deleteTodo: function (position) {
     todoList.deleteTodo(position)
     view.displayTodos()
   },
-  toggleCompleted: function () {
-    var toggleCompletedPositionInput = document.getElementById('toggleCompletedPositionInput')
-    todoList.toggleCompleted(toggleCompletedPositionInput.valueAsNumber)
-    toggleCompletedPositionInput.value = ''
+  toggleCompleted: function (position) {
+    todoList.toggleCompleted(position)
     view.displayTodos()
   },
   toggleAll: function () {
@@ -66,38 +64,80 @@ var handlers = {
 
 var view = {
 
-  displayTodos: function () {
+  displayTodos: function (position) {
     var todosUl = document.querySelector('ul')
     todosUl.innerHTML = ''
 
     for (var i = 0; i < todoList.todos.length; i++) {
       var todoLi = document.createElement('li')
-      var todoStatus
 
-      if (todoList.todos[i].completed) {
-        todoStatus = '(X) '
-      } else {
-        todoStatus = '( ) '
-      }
-      todoLi.id = 'li-' + i
-      todoLi.textContent = todoStatus + todoList.todos[i].todoText
-      todoLi.appendChild(this.createDeleteButton())
       todosUl.appendChild(todoLi)
+      todoLi.id = i
+
+      todoLi.appendChild(this.createCheckbox())
+      document.querySelector(`li:nth-of-type(${i + 1}) > input[type='checkbox']`).checked = todoList.todos[i].completed
+
+      if (position === i) {
+        todoLi.appendChild(this.createChangeTextbox(todoList.todos[i].todoText))
+        document.querySelector('.change-todo-text-input').focus()
+      } else {
+        todoLi.appendChild(this.createTodoText(todoList.todos[i].todoText))
+        if (todoList.todos[i].completed) {
+          document.querySelector(`li:nth-of-type(${i + 1}) > label`).style.textDecoration = 'line-through'
+        }
+      }
+      todoLi.appendChild(this.createDeleteButton())
     }
   },
+  createCheckbox: function () {
+    var checkbox = document.createElement('input')
+    checkbox.className = 'toggle-todo-checkbox'
+    checkbox.type = 'checkbox'
+    return checkbox
+  },
+  createTodoText: function (content) {
+    var label = document.createElement('label')
+    label.className = 'todo-text'
+    label.textContent = content
+    return label
+  },
   createDeleteButton: function () {
-    var deleteButton = document.createElement('button')
-    deleteButton.textContent = 'Delete'
-    deleteButton.className = 'deleteButton'
+    var deleteButton = document.createElement('img')
+    deleteButton.className = 'delete-button'
+    deleteButton.src = 'icons/delete.png'
     return deleteButton
+  },
+  createChangeTextbox: function (content) {
+    var changeTextbox = document.createElement('input')
+    changeTextbox.placeholder = content
+    changeTextbox.className = 'change-todo-text-input'
+    changeTextbox.type = 'text'
+    return changeTextbox
   },
   setUpEventListeners: function () {
     var todosUl = document.querySelector('ul')
 
     todosUl.addEventListener('click', function (e) {
-      if (e.target.className === 'deleteButton') {
+      if (e.target.className === 'delete-button') {
         handlers.deleteTodo(parseInt(e.target.parentNode.id))
+      } else if (e.target.className === 'toggle-todo-checkbox') {
+        handlers.toggleCompleted(parseInt(e.target.parentNode.id))
+      } else if (e.target.className === 'todo-text') {
+        handlers.changeTodo(parseInt(e.target.parentNode.id))
       }
+    })
+    todosUl.addEventListener('keypress', function (e) {
+      if (e.keyCode === 13) {
+        handlers.saveChangeTodo(parseInt(e.target.parentNode.id))
+      }
+    })
+    document.querySelector('.add-todo-text-input').addEventListener('keypress', function (e) {
+      if (e.keyCode === 13) {
+        handlers.addTodo(parseInt(e.target.parentNode.id))
+      }
+    })
+    document.querySelector('.toggle-all-button').addEventListener('click', function (e) {
+      handlers.toggleAll()
     })
   }
 }
