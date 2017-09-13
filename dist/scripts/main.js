@@ -1,81 +1,81 @@
-const todoList = {
+'use strict';
+
+var todoList = {
 
   todos: [],
 
-  addTodo(todoText) {
+  addTodo: function addTodo(todoText) {
     this.todos.push({
-      todoText,
-      completed: false,
+      todoText: todoText,
+      completed: false
     });
   },
-  changeTodo(position, todoText) {
+  changeTodo: function changeTodo(position, todoText) {
     this.todos[position].todoText = todoText;
   },
-  deleteTodo(position) {
+  deleteTodo: function deleteTodo(position) {
     this.todos.splice(position, 1);
   },
-  toggleCompleted(position) {
+  toggleCompleted: function toggleCompleted(position) {
     this.todos[position].completed = !this.todos[position].completed;
   },
-  toggleAll() {
-    const statusAll = [];
-    this.todos.forEach((todo) => {
+  toggleAll: function toggleAll() {
+    var statusAll = [];
+    this.todos.forEach(function (todo) {
       statusAll.push(todo.completed);
     });
-    this.todos.forEach((todo) => {
+    this.todos.forEach(function (todo) {
       if (statusAll.indexOf(false) === -1) {
         todo.completed = false;
       } else {
         todo.completed = true;
       }
     });
-  },
+  }
 };
 
-const handlers = {
-
-  addTodo() {
-    const addTodoTextInput = document.querySelector('.add-todo-text-input');
+var handlers = {
+  addTodo: function addTodo() {
+    var addTodoTextInput = document.querySelector('.add-todo-text-input');
     todoList.addTodo(addTodoTextInput.value);
     addTodoTextInput.value = '';
     view.displayTodos();
   },
-  changeTodo(position) {
+  changeTodo: function changeTodo(position) {
     view.displayTodos(position);
   },
-  saveChangeTodo(position) {
-    const changeTodoTextInput = document.querySelector('.change-todo-text-input');
+  saveChangeTodo: function saveChangeTodo(position) {
+    var changeTodoTextInput = document.querySelector('.change-todo-text-input');
     todoList.changeTodo(position, changeTodoTextInput.value);
     view.displayTodos();
   },
-  deleteTodo(position) {
+  deleteTodo: function deleteTodo(position) {
     todoList.deleteTodo(position);
     view.displayTodos();
   },
-  toggleCompleted(position) {
+  toggleCompleted: function toggleCompleted(position) {
     todoList.toggleCompleted(position);
     view.displayTodos();
   },
-  toggleAll() {
+  toggleAll: function toggleAll() {
     todoList.toggleAll();
     view.displayTodos();
-  },
+  }
 };
 
-const view = {
-
-  displayTodos(position) {
-    const todosUl = document.querySelector('ul');
+var view = {
+  displayTodos: function displayTodos(position) {
+    var todosUl = document.querySelector('ul');
     todosUl.innerHTML = '';
 
-    for (let i = 0; i < todoList.todos.length; i++) {
-      const todoLi = document.createElement('li');
+    for (var i = 0; i < todoList.todos.length; i++) {
+      var todoLi = document.createElement('li');
 
       todosUl.appendChild(todoLi);
       todoLi.id = i;
 
       todoLi.appendChild(this.createCheckbox());
-      document.querySelector(`li:nth-of-type(${i + 1}) > input[type='checkbox']`).checked = todoList.todos[i].completed;
+      document.querySelector('li:nth-of-type(' + (i + 1) + ') > input[type=\'checkbox\']').checked = todoList.todos[i].completed;
 
       if (position === i) {
         todoLi.appendChild(this.createChangeTextbox(todoList.todos[i].todoText));
@@ -83,41 +83,41 @@ const view = {
       } else {
         todoLi.appendChild(this.createTodoText(todoList.todos[i].todoText));
         if (todoList.todos[i].completed) {
-          document.querySelector(`li:nth-of-type(${i + 1}) > label`).style.textDecoration = 'line-through';
+          document.querySelector('li:nth-of-type(' + (i + 1) + ') > label').style.textDecoration = 'line-through';
         }
       }
       todoLi.appendChild(this.createDeleteButton());
     }
   },
-  createCheckbox() {
-    const checkbox = document.createElement('input');
+  createCheckbox: function createCheckbox() {
+    var checkbox = document.createElement('input');
     checkbox.className = 'toggle-todo-checkbox';
     checkbox.type = 'checkbox';
     return checkbox;
   },
-  createTodoText(content) {
-    const label = document.createElement('label');
+  createTodoText: function createTodoText(content) {
+    var label = document.createElement('label');
     label.className = 'todo-text';
     label.textContent = content;
     return label;
   },
-  createDeleteButton() {
-    const deleteButton = document.createElement('img');
+  createDeleteButton: function createDeleteButton() {
+    var deleteButton = document.createElement('img');
     deleteButton.className = 'delete-button';
     deleteButton.src = 'assets/icons/delete.png';
     return deleteButton;
   },
-  createChangeTextbox(content) {
-    const changeTextbox = document.createElement('input');
+  createChangeTextbox: function createChangeTextbox(content) {
+    var changeTextbox = document.createElement('input');
     changeTextbox.placeholder = content;
     changeTextbox.className = 'change-todo-text-input';
     changeTextbox.type = 'text';
     return changeTextbox;
   },
-  setUpEventListeners() {
-    const todosUl = document.querySelector('ul');
+  setUpEventListeners: function setUpEventListeners() {
+    var todosUl = document.querySelector('ul');
 
-    todosUl.addEventListener('click', (e) => {
+    todosUl.addEventListener('click', function (e) {
       if (e.target.className === 'delete-button') {
         handlers.deleteTodo(parseInt(e.target.parentNode.id));
       } else if (e.target.className === 'toggle-todo-checkbox') {
@@ -126,20 +126,20 @@ const view = {
         handlers.changeTodo(parseInt(e.target.parentNode.id));
       }
     });
-    todosUl.addEventListener('keypress', (e) => {
+    todosUl.addEventListener('keypress', function (e) {
       if (e.keyCode === 13) {
         handlers.saveChangeTodo(parseInt(e.target.parentNode.id));
       }
     });
-    document.querySelector('.add-todo-text-input').addEventListener('keypress', (e) => {
+    document.querySelector('.add-todo-text-input').addEventListener('keypress', function (e) {
       if (e.keyCode === 13) {
         handlers.addTodo(parseInt(e.target.parentNode.id));
       }
     });
-    document.querySelector('.toggle-all-button').addEventListener('click', () => {
+    document.querySelector('.toggle-all-button').addEventListener('click', function () {
       handlers.toggleAll();
     });
-  },
+  }
 };
 
 view.setUpEventListeners();
