@@ -10,7 +10,6 @@
 
 1. [Demo](#demo)
 2. [Description](#description)
-3. [Highlights and Discussion](#highlights)
 4. [Contributing](#contributing)
 5. [Author, Credits and Links](#author)
 5. [License](#license)
@@ -34,14 +33,6 @@ Every newbie coder must at some point commit themselves to completing a todo lis
 * To animate interactive elements.
 * To dynamically manipulate text content.
 * And much, much more!
-
-<a name="highlights"/>
-
-## Highlights and Discussion
-
-### something
-
-<a name="contributing"/>
 
 ## Contributing
 
